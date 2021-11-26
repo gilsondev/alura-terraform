@@ -8,8 +8,14 @@ terraform {
     }
   }
 }
+
 provider "aws" {
   region = "us-east-1"
+}
+
+provider "aws" {
+  alias  = "us-east-2"
+  region = "us-east-2"
 }
 
 # Resource tem um tipo e um nome
@@ -45,6 +51,17 @@ resource "aws_instance" "dev5" {
   vpc_security_group_ids = ["${aws_security_group.access_ssh_devs.id}"]
   tags = {
     Name = "dev5"
+  }
+}
+
+resource "aws_instance" "dev6" {
+  provider               = aws.us-east-2
+  ami                    = "ami-0629230e074c580f2" # Ubuntu Server 20.04 LTS
+  instance_type          = "t2.micro"
+  key_name               = "terraform-aws"
+  vpc_security_group_ids = ["${aws_security_group.access_ssh_devs-us-east-2.id}"]
+  tags = {
+    Name = "dev6"
   }
 }
 
