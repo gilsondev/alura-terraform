@@ -18,7 +18,7 @@ resource "aws_instance" "dev" {
   ami                    = "ami-083654bd07b5da81d" # Ubuntu Server 20.04 LTS
   instance_type          = "t2.micro"
   key_name               = "terraform-aws"
-  vpc_security_group_ids = ["sg-08223c4aa02776d7f"]
+  vpc_security_group_ids = ["${aws_security_group.access_ssh_devs.id}"]
   tags = {
     Name = "terraform-dev-${count.index}"
   }
