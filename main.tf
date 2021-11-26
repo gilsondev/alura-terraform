@@ -24,6 +24,30 @@ resource "aws_instance" "dev" {
   }
 }
 
+
+resource "aws_instance" "dev4" {
+  ami                    = "ami-083654bd07b5da81d" # Ubuntu Server 20.04 LTS
+  instance_type          = "t2.micro"
+  key_name               = "terraform-aws"
+  vpc_security_group_ids = ["${aws_security_group.access_ssh_devs.id}"]
+  depends_on = [
+    aws_s3_bucket.dev4
+  ]
+  tags = {
+    Name = "dev4"
+  }
+}
+
+resource "aws_instance" "dev5" {
+  ami                    = "ami-083654bd07b5da81d" # Ubuntu Server 20.04 LTS
+  instance_type          = "t2.micro"
+  key_name               = "terraform-aws"
+  vpc_security_group_ids = ["${aws_security_group.access_ssh_devs.id}"]
+  tags = {
+    Name = "dev5"
+  }
+}
+
 # Criando um security group
 resource "aws_security_group" "access_ssh_devs" {
   name        = "access_ssh_devs"
@@ -38,5 +62,15 @@ resource "aws_security_group" "access_ssh_devs" {
 
   tags = {
     Name = "ssh"
+  }
+}
+
+# Criando novo bucket
+resource "aws_s3_bucket" "dev4" {
+  bucket = "gilsonlabs-dev4"
+  acl    = "private"
+
+  tags = {
+    Name = "gilsonlabs-dev4"
   }
 }
