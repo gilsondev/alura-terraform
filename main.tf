@@ -60,6 +60,7 @@ resource "aws_instance" "dev6" {
   instance_type          = "t2.micro"
   key_name               = "terraform-aws"
   vpc_security_group_ids = ["${aws_security_group.access_ssh_devs-us-east-2.id}"]
+  depends_on             = [aws_dynamodb_table.dynamodb-homologacao]
   tags = {
     Name = "dev6"
   }
@@ -72,5 +73,23 @@ resource "aws_s3_bucket" "dev4" {
 
   tags = {
     Name = "gilsonlabs-dev4"
+  }
+}
+
+resource "aws_dynamodb_table" "dynamodb-homologacao" {
+  provider     = aws.us-east-2
+  name         = ""
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "UserId"
+  range_key    = "GameTitle"
+
+  attribute {
+    name = "UserId"
+    type = "S"
+  }
+
+  attribute {
+    name = "GameTitle"
+    type = "S"
   }
 }
